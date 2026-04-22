@@ -1,4 +1,5 @@
 import express from "express";
+import campgroundRoutes from "./routes/campgroundRoutes.js";
 
 const app = express();
 const PORT = 5000;
@@ -11,31 +12,7 @@ app.get("/", (req, res) => {
     res.send("CampRate backend is running!");
 });
 
-// API route
-app.get("/api/campgrounds", (req, res) => {
-    const campgrounds = [
-        {
-            id: 1,
-            name: "Åhus Camping",
-            location: "Åhus",
-            rating: 4.5
-        },
-        {
-            id: 2,
-            name: "Böda Sand",
-            location: "Öland",
-            rating: 4.9
-        },
-        {
-            id: 3,
-            name: "Kronocamping Saxnäs",
-            location: "Öland",
-            rating: 4.4
-        }
-    ];
-
-    res.json(campgrounds);
-});
+app.use("/api/campgrounds", campgroundRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server is running on ${PORT}`);
