@@ -1,4 +1,4 @@
-const campgrounds = [
+let campgrounds = [
     {
         id: 1,
         name: "Åhus Camping",
@@ -70,7 +70,26 @@ export function getCampgroundById(req, res) {
     }
 
     res.json(campground);
+}
 
+export function deleteCampground(req, res) {
+    const id = Number(req.params.id);
+
+    const campgroundExists = campgrounds.find(
+        (campground) => campground.id === id
+    );
+
+    if (!campgroundExists) {
+        return res.status(404).json({
+            error: "Campground not found"
+        });
+    }
+
+    campgrounds = campgrounds.filter(
+        (campground) => campground.id !== id
+    );
+
+    res.status(204).send();
 }
 
 
