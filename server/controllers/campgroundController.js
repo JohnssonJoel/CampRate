@@ -26,7 +26,7 @@ export function getAllCampgrounds(req, res) {
 export function createCampground(req, res) {
     const { id, name, location, rating } = req.body;
 
-    if (!name || !location || !rating === undefined) {
+    if (!name || !location || rating === undefined) {
         return res.status(400).json({
             error: "name, location and rating are required"
         });
@@ -90,6 +90,45 @@ export function deleteCampground(req, res) {
     );
 
     res.status(204).send();
+}
+
+export function updateCampground(req, res) {
+    const id = Number(req.params.id);
+    const { name, location, rating } = req.body;
+
+    const campground = campgrounds.find(
+        (campground) => campground.id === id
+    );
+
+    if (!campground) {
+        return res.status(404).json({
+            error: "Campground not found"
+        });
+    }
+
+    if (!name || !location || rating === undefined) {
+        return res.status(400).json({
+            error: "name, location and rating are required"
+        });
+    }
+
+    if (typeof rating !== "number") {
+        return res.status(400).json({
+            error: "rating must be a number"
+        });
+    }
+
+    if (rating < 1 || rating > 5) {
+        return res.status(400).json({
+            error: "rating must be between 1 and 5"
+        });
+    }
+
+    campground.name = name;
+    campground.location = location;
+    campground.rating = rating;
+
+    res.json(campground);
 }
 
 
