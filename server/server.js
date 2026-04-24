@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import campgroundRoutes from "./routes/campgroundRoutes.js";
 import cennectDB from "./config/db.js";
 import reviewRoutes from "./routes/reviewRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/campgrounds", campgroundRoutes);
 app.use("/api/campgrounds/:campgroundId/reviews", reviewRoutes);
+app.use("/api/users", userRoutes);
 
 cennectDB().then(() => {
     app.listen(PORT, () => {
