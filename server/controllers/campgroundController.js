@@ -24,79 +24,61 @@ export async function createCampground(req, res) {
     }
 }
 
-export function getCampgroundById(req, res) {
-    const id = Number(req.params.id);
+export async function getCampgroundById(req, res) {
+    try {
+        const campground = await Campground.findById(req.params.id);
 
-    const campground = campgrounds.find(
-        (campground) => campground.id === id
-    );
-
-    if (!campground) {
-        return res.status(404).json({
-            error: "Campground not found"
+        if (!campground) {
+            return res.status(404).json({
+                error: "Campground not found"
+            });
+        }
+        
+        res.json(campground);
+    } catch (error) {
+        return res.status(400).json({
+            error: "Invalid campground id"
         });
     }
-
-    res.json(campground);
 }
 
-export function deleteCampground(req, res) {
-    const id = Number(req.params.id);
+export async function deleteCampground(req, res) {
+    try {
+        const deleteCampground = await Campground.findByIdAndDelete(
+            req.params.id
+        );
 
-    const campgroundExists = campgrounds.find(
-        (campground) => campground.id === id
-    );
+        if (!deleteCampground) {
+            return res.status(404).json({
+                error: "Campground not found"
+            });
+        }
 
-    if (!campgroundExists) {
-        return res.status(404).json({
-            error: "Campground not found"
+        res.status(204).send();
+    } catch (error) {
+        return res.status(400).json({
+            error: "Inavalid campground id"
         });
     }
-
-    campgrounds = campgrounds.filter(
-        (campground) => campground.id !== id
-    );
-
-    res.status(204).send();
 }
 
-export function updateCampground(req, res) {
-    const id = Number(req.params.id);
-    const { name, location, rating } = req.body;
+export async function updateCampground(req, res) {
+    try {
+        const updateCampground = await Campground.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            {
+                new: true,
+                runValidators: true
+            }
+        );
 
-    const campground = campgrounds.find(
-        (campground) => campground.id === id
-    );
-
-    if (!campground) {
-        return res.status(404).json({
-            error: "Campground not found"
-        });
-    }
-
-    if (!name || !location || rating === undefined) {
+        res.json(updateCampground);
+    } catch (error) {
         return res.status(400).json({
-            error: "name, location and rating are required"
+            error: error.message
         });
     }
-
-    if (typeof rating !== "number") {
-        return res.status(400).json({
-            error: "rating must be a number"
-        });
-    }
-
-    if (rating < 1 || rating > 5) {
-        return res.status(400).json({
-            error: "rating must be between 1 and 5"
-        });
-    }
-
-    campground.name = name;
-    campground.location = location;
-    campground.rating = rating;
-
-    res.json(campground);
 }
 
 
