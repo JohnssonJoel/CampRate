@@ -1,59 +1,27 @@
-let campgrounds = [
-    {
-        id: 1,
-        name: "Åhus Camping",
-        location: "Åhus",
-        rating: 4.5
-    },
-    {
-        id: 2,
-        name: "Böda Sand",
-        location: "Öland",
-        rating: 4.9
-    },
-    {
-        id: 3,
-        name: "Kronocamping Saxnäs",
-        location: "Öland",
-        rating: 4.4
-    }
-];
+import Campground from "../models/Campground.js";
 
-export function getAllCampgrounds(req, res) {
-    res.json(campgrounds);
+export async function getAllCampgrounds(req, res) {
+    try {
+        const campgrounds = await Campground.find();
+
+        res.json(campgrounds);
+    } catch (error) {
+        res.status(500).json({
+            error: "Failed to fetch campgrounds"
+        });
+    }
 }
 
-export function createCampground(req, res) {
-    const { id, name, location, rating } = req.body;
+export async function createCampground(req, res) {
+    try {
+        const newCampground = await Campground.create(req.body);
 
-    if (!name || !location || rating === undefined) {
-        return res.status(400).json({
-            error: "name, location and rating are required"
+        res.status(201).json(newCampground);
+    } catch (error) {
+        res.status(400).json({
+            error: error.message
         });
     }
-
-    if (typeof rating !== "number") {
-        return res.status(400).json({
-            error: "rating must be a number"
-        });
-    }
-
-    if (rating < 1 || rating > 5) {
-        return res.status(400).json({
-            error: " rating must be between 1 and 5"
-        });
-    }
-
-    const newCampground = {
-        id,
-        name,
-        location,
-        rating
-    };
-
-    campgrounds.push(newCampground);
-
-    res.status(201).json(newCampground)
 }
 
 export function getCampgroundById(req, res) {
