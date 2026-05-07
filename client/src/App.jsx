@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import CampgroundCard from "./components/CampgroundCard";
+import CampgroundForm from "./components/CampgroundForm";
 
 function App() {
   const [campgrounds, setCampgrounds] = useState([]);
@@ -39,9 +40,18 @@ function App() {
     return <h1>{error}</h1>;
   }
 
+  function handleCampgroundCreated(newCampground) {
+    setCampgrounds((currentCampgrounds) => [
+      ...currentCampgrounds,
+      newCampground
+    ]);
+  }
+
   return (
     <div>
       <h1>CampRate</h1>
+
+      <CampgroundForm onCampgroundCreated={handleCampgroundCreated} />
 
       {campgrounds.map((campground) => (
         <CampgroundCard
