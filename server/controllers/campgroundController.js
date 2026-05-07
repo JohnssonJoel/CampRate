@@ -2,7 +2,13 @@ import Campground from "../models/Campground.js";
 
 export async function getAllCampgrounds(req, res) {
     try {
-        const campgrounds = await Campground.find();
+        const filter = {};
+
+        if (req.query.location) {
+            filter.location = req.query.location;
+        }
+
+        const campgrounds = await Campground.find(filter);
 
         res.json(campgrounds);
     } catch (error) {
@@ -77,6 +83,20 @@ export async function updateCampground(req, res) {
     } catch (error) {
         return res.status(400).json({
             error: error.message
+        });
+    }
+}
+
+export async function getTopRatedCampgrounds(req, res) {
+    try {
+        const campgrounds = await Campground.find()
+            .sort({ rating: -1 })
+            .limit(5);
+
+        res.json(campgrounds);
+    } catch (error) {
+        res.status(500).json({
+            error: "Failed to fetch top rated campgrounds"
         });
     }
 }

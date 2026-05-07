@@ -4,12 +4,14 @@ import {
     createCampground,
     getCampgroundById,
     deleteCampground,
-    updateCampground
+    updateCampground,
+    getTopRatedCampgrounds
 } from "../controllers/campgroundController.js";
 
 const router = express.Router();
 
 router.get("/", getAllCampgrounds);
+router.get("/top-rated", getTopRatedCampgrounds);
 router.get("/:id", getCampgroundById);
 router.post("/", createCampground);
 router.delete("/:id", deleteCampground);
