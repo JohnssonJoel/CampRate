@@ -47,6 +47,31 @@ function App() {
     ]);
   }
 
+  async function handleDeleteCampground(id) {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this campground?"
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    const response = await fetch(
+      `http://localhost:5000/api/campgrounds/${id}`,
+      {
+        method: "DELETE"
+      }
+    );
+
+    if (response.ok) {
+      setCampgrounds((currentCampgrounds) =>
+        currentCampgrounds.filter(
+          (campground) => campground._id !== id
+        )
+      );
+    }
+  }
+
   return (
     <div>
       <h1>CampRate</h1>
@@ -57,6 +82,7 @@ function App() {
         <CampgroundCard
         key={campground._id}
         campground={campground}
+        onDelete={handleDeleteCampground}
         />
       ))}
     </div>
