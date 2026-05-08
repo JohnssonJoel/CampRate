@@ -96,19 +96,22 @@ function App() {
   }
 
   return (
-    <div>
+    <div className="app">
       <h1>CampRate</h1>
 
-      <CampgroundForm onCampgroundCreated={handleCampgroundCreated} />
+      <CampgroundForm onCampgroundCreated={handleCampgroundCreated}
+      />
 
-      {campgrounds.map((campground) => (
-        <CampgroundCard
-        key={campground._id}
-        campground={campground}
-        onDelete={handleDeleteCampground}
-        onUpdate={handleUpdateCampground}
-        />
-      ))}
+      <div calssName="campground-list">
+        {campgrounds.map((campground) => (
+          <CampgroundCard
+            key={campground._id}
+            campground={campground}
+            onDelete={handleDeleteCampground}
+            onUpdate={handleUpdateCampground}
+          />
+        ))}
+      </div>
     </div>
   );
 }

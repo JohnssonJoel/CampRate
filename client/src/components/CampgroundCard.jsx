@@ -19,7 +19,7 @@ function CampgroundCard({ campground, onDelete, onUpdate }) {
 
     if (isEditing) {
         return (
-            <div>
+            <div className="campground-card">
                 <input
                     value={name}
                     onChange={(event) => setName(event.target.value)}
@@ -42,7 +42,7 @@ function CampgroundCard({ campground, onDelete, onUpdate }) {
         )
     } 
     return (
-        <div>
+        <div className="campground-card">
             <h2>{campground.name}</h2>
             <p>Location: {campground.location}</p>
             <p>Rating: {campground.rating}</p>
