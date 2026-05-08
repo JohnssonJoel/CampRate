@@ -72,6 +72,29 @@ function App() {
     }
   }
 
+  async function handleUpdateCampground(id, updateCampground) {
+    const response = await fetch(
+      `http://localhost:5000/api/campgrounds/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(updateCampground)
+      }
+    );
+
+    const data = await response.json();
+
+    if (response.ok) {
+      setCampgrounds((currentCampgrounds) =>
+        currentCampgrounds.map((campground) =>
+          campground._id === id ? data : campground
+        )
+      );
+    }
+  }
+
   return (
     <div>
       <h1>CampRate</h1>
@@ -83,6 +106,7 @@ function App() {
         key={campground._id}
         campground={campground}
         onDelete={handleDeleteCampground}
+        onUpdate={handleUpdateCampground}
         />
       ))}
     </div>
