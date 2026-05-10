@@ -18,6 +18,9 @@ export async function createReview(req, res) {
             campground: req.params.campgroundId
         });
 
+        campground.reviews.push(review-_id);
+        await campground.save();
+
         res.status(201).json(review);
     } catch (error) {
         return res.status(400).json({

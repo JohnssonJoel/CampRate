@@ -8,7 +8,7 @@ export async function getAllCampgrounds(req, res) {
             filter.location = req.query.location;
         }
 
-        const campgrounds = await Campground.find(filter);
+        const campgrounds = await Campground.find(filter).populate("reviews");
 
         res.json(campgrounds);
     } catch (error) {
@@ -32,7 +32,7 @@ export async function createCampground(req, res) {
 
 export async function getCampgroundById(req, res) {
     try {
-        const campground = await Campground.findById(req.params.id);
+        const campground = await Campground.findById(req.params.id).populate("reviews");
 
         if (!campground) {
             return res.status(404).json({
@@ -100,5 +100,3 @@ export async function getTopRatedCampgrounds(req, res) {
         });
     }
 }
-
-

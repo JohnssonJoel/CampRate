@@ -17,7 +17,13 @@ const campgroundSchema = new mongoose.Schema(
             required: [true, "Rating is required"],
             min: [1, "Rating mus be at least 1"],
             max: [5, "Rating cannot be more than 5"]
-        }
+        },
+        reviews: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Review"
+            }
+        ]
     },
     {
         timestamps: true
