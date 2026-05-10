@@ -8,37 +8,39 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    async function fetchCampgrounds() {
-      try {
-        const response = await fetch(
-          "http://localhost:5000/api/campgrounds"
-        );
+  async function fetchCampgrounds() {
+    try {
+      setError("");
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch campgrounds");
-        }
+      const response = await fetch(
+        "http://localhost:5000/api/campgrounds"
+      );
 
-        const data = await response.json();
-
-        setCampgrounds(data);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
+      if (!response.ok) {
+        throw new Error("Failed to fetch campgrounds");
       }
+
+      const data = await response.json();
+
+      setCampgrounds(data);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
     }
+  }
 
+  useEffect(() => {
     fetchCampgrounds();
+
+    const intervalId = setInterval(() => {
+      fetchCampgrounds();
+    }, 10000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
   }, []);
-
-  if (loading) {
-    return <h1>Loading...</h1>;
-  }
-
-  if (error) {
-    return <h1>{error}</h1>;
-  }
 
   function handleCampgroundCreated(newCampground) {
     setCampgrounds((currentCampgrounds) => [
@@ -72,7 +74,7 @@ function App() {
     }
   }
 
-  async function handleUpdateCampground(id, updateCampground) {
+  async function handleUpdateCampground(id, updatedCampground) {
     const response = await fetch(
       `http://localhost:5000/api/campgrounds/${id}`,
       {
@@ -80,7 +82,7 @@ function App() {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify(updateCampground)
+        body: JSON.stringify(updatedCampground)
       }
     );
 
@@ -95,14 +97,23 @@ function App() {
     }
   }
 
+  if (loading) {
+    return <h1>Loading...</h1>;
+  }
+
+  if (error) {
+    return <h1>{error}</h1>;
+  }
+
   return (
     <div className="app">
       <h1>CampRate</h1>
 
-      <CampgroundForm onCampgroundCreated={handleCampgroundCreated}
+      <CampgroundForm
+        onCampgroundCreated={handleCampgroundCreated}
       />
 
-      <div calssName="campground-list">
+      <div className="campground-list">
         {campgrounds.map((campground) => (
           <CampgroundCard
             key={campground._id}

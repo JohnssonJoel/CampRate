@@ -1,0 +1,24 @@
+{
+  "name": "camprate",
+  "version": "1.0.0",
+  "description": "A fullstack web app for rating, reviewing, and managing campgrounds.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JohnssonJoel/CampRate.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/JohnssonJoel/CampRate/issues"
+  },
+  "homepage": "https://github.com/JohnssonJoel/CampRate#readme",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
