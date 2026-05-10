@@ -71,7 +71,7 @@ function CampgroundCard({ campground, onDelete, onUpdate }) {
       )}
 
       <ReviewForm
-        campground={campground._id}
+        campgroundId={campground._id}
         onReviewCreated={handleReviewCreated}
       />
 
