@@ -4,6 +4,7 @@ import CampgroundCard from "./components/CampgroundCard";
 import CampgroundForm from "./components/CampgroundForm";
 
 function App() {
+  const [searchTerm, setSearchTerm] = useState("");
   const [campgrounds, setCampgrounds] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -97,6 +98,16 @@ function App() {
     }
   }
 
+  const filteredCampgrounds = campgrounds.filter((
+    campground) =>
+      campground.name
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase()) || 
+      campground.location
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
+  );
+
   if (loading) {
     return <h1>Loading...</h1>;
   }
@@ -109,12 +120,19 @@ function App() {
     <div className="app">
       <h1>CampRate</h1>
 
+      <input 
+        type="text"
+        placeholder="Search by name or location..."
+        value={searchTerm}
+        onChange={(event) => setSearchTerm(event.target.value)}
+        />
+
       <CampgroundForm
         onCampgroundCreated={handleCampgroundCreated}
       />
 
       <div className="campground-list">
-        {campgrounds.map((campground) => (
+        {filteredCampgrounds.map((campground) => (
           <CampgroundCard
             key={campground._id}
             campground={campground}
