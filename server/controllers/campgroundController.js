@@ -1,4 +1,5 @@
 import Campground from "../models/Campground.js";
+import Review from "../models/Review.js";
 
 export async function getAllCampgrounds(req, res) {
     try {
@@ -59,6 +60,10 @@ export async function deleteCampground(req, res) {
                 error: "Campground not found"
             });
         }
+
+        await Review.deleteMany({
+            campground: req.params.id
+        });
 
         res.status(204).send();
     } catch (error) {
