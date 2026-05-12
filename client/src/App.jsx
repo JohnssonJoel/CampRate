@@ -116,22 +116,29 @@ function App() {
     return <h1>{error}</h1>;
   }
 
-  return (
-    <div className="app">
+return (
+  <div className="app">
+    <header className="hero">
       <h1>CampRate</h1>
+      <p>Discover and rate amazing campgrounds</p>
 
-      <input 
+      <input
+        className="search-input"
         type="text"
         placeholder="Search by name or location..."
         value={searchTerm}
         onChange={(event) => setSearchTerm(event.target.value)}
-        />
-
-      <CampgroundForm
-        onCampgroundCreated={handleCampgroundCreated}
       />
+    </header>
 
-      <div className="campground-list">
+    <main className="main-layout">
+      <aside className="sidebar">
+        <CampgroundForm
+          onCampgroundCreated={handleCampgroundCreated}
+        />
+      </aside>
+
+      <section className="campground-list">
         {filteredCampgrounds.map((campground) => (
           <CampgroundCard
             key={campground._id}
@@ -140,9 +147,10 @@ function App() {
             onUpdate={handleUpdateCampground}
           />
         ))}
-      </div>
-    </div>
-  );
+      </section>
+    </main>
+  </div>
+);
 }
 
 export default App;

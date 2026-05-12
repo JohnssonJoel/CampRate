@@ -21,6 +21,16 @@ export async function createReview(req, res) {
         campground.reviews.push(review._id);
         await campground.save();
 
+        const reviews = await Review.find({
+            campground: req.params.campgroundId
+        });
+
+        const averageRating =
+            reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length;
+
+        campground.rating = Number(averageRating.toFixed(1));
+        await campground.save();
+
         res.status(201).json(review);
     } catch (error) {
         return res.status(400).json({
